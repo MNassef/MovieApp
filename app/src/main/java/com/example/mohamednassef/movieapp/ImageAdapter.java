@@ -5,27 +5,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 /**
  * Created by mohamednassef on 7/11/15.
  */
 
 
+
+
+
 public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
-    // references to our images
-    private Integer[] mThumbIds = { R.drawable.images3, R.drawable.images, R.drawable.images2};
-    private String [] mThumbtxt = {"Ocean_1","Ocean_2","Ocean_3"};
+    public Context mContext;
+    public  List<String> moviePosters;
 
 
-    public ImageAdapter(Context c) {
-        mContext = c;
+
+
+    public ImageAdapter(Context c, List<String> Posters) {
+        this.mContext = c;
+        this.moviePosters = Posters;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        //return mThumbIds.length;
+        return moviePosters.size();
     }
 
     public Object getItem(int position) {
@@ -36,34 +42,32 @@ public class ImageAdapter extends BaseAdapter {
         return 0;
     }
 
+
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         View grid;
-        if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            //imageView = new ImageView(mContext);
-            /*
-            imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
-            */
+        //if (convertView == null) {
+
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             grid = inflater.inflate(R.layout.grid_image, null);
-            TextView textView = (TextView) grid.findViewById(R.id.text_view);
-            ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image_view);
-            textView.setText(mThumbtxt[position]);
-            imageView.setImageResource(mThumbIds[position]);
+
+            SquareImageView imageView = (SquareImageView) grid.findViewById(R.id.grid_image_view);
+            if (moviePosters.get(position).toString().equals("http://i.imgur.com/DvpvklR.png"))
+            {
+                Picasso.with(mContext).load("http://i.imgur.com/DvpvklR.png").into(imageView);
+
+            }
+            else
+            {
+                Picasso.with(mContext).load("http://image.tmdb.org/t/p/w154/"+moviePosters.get(position).toString()).into(imageView);
+            }
 
 
-
-        } else {
+         /*else {
             grid = convertView;
-        }
+        }*/
 
-        //imageView.setImageResource(mThumbIds[position]);
         return grid;
     }
-
-
 
 }

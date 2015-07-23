@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">MovieApp</string>
     <string name="hello_world">Hello world!</string>
+    <string name="sorting_label">Movie Sorting Preference</string>
+    <string name="sorting_key">Sort_key</string>
+    <string name="sort_mostpopular_label">Most Popular</string>
+    <string name="sort_mostpopular">most_popular</string>
+    <string name="sort_highestrated_label">Highest Rated</string>
+    <string name="sort_highestrated">highest_rated</string>
+    <string name="title_activity_settings">Setting_Activity</string>
     <string name="action_settings">Settings</string>
+    <string name="url_MP">http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&amp;api_key=d2d5f7382930f7cf1e176da00f076953</string>
+    <string name="url_HR">http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&amp;api_key=d2d5f7382930f7cf1e176da00f076953</string>
+
+
+
+
 </resources>
