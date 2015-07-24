@@ -1,5 +1,6 @@
 package com.example.mohamednassef.movieapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 public class MovieFragment extends Fragment {
 
     public ImageAdapter imageAdapter;
+    public FetchPostersTask fetch;
 
 
     public MovieFragment() {
@@ -46,8 +48,6 @@ public class MovieFragment extends Fragment {
             JSONArray results = moviesJSON.getJSONArray("results");
             JSONObject movie = results.getJSONObject(i);
             Posters[i] = movie.getString("poster_path");
-
-
         }
         return Posters;
 
@@ -76,12 +76,12 @@ public class MovieFragment extends Fragment {
     }
 
     public void updateGrid() {
-        FetchPostersTask fetch = new FetchPostersTask();
+        fetch = new FetchPostersTask();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sorting_order = prefs.getString(getString(R.string.sorting_key),
                 getString(R.string.sort_mostpopular));
-        Toast.makeText(getActivity(), sorting_order,
-                Toast.LENGTH_LONG).show();
+        /*Toast.makeText(getActivity(), sorting_order,
+                Toast.LENGTH_LONG).show();*/
         String url;
         if (sorting_order.equals(getString(R.string.sort_mostpopular))) {
             url = getString(R.string.url_MP);
@@ -106,6 +106,19 @@ public class MovieFragment extends Fragment {
         gridview.setAdapter(imageAdapter);
 
 
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String movies = fetch.moviesJsonStr;
+
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, movies);
+                intent.putExtra(Intent.EXTRA_REFERRER,Integer.toString(position));
+                startActivity(intent);
+            }
+        });
+
         return rootView;
 
     }
@@ -119,6 +132,7 @@ public class MovieFragment extends Fragment {
     public class FetchPostersTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchPostersTask.class.getSimpleName();
+        String moviesJsonStr = null;
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -128,7 +142,7 @@ public class MovieFragment extends Fragment {
             BufferedReader reader = null;
 
             // Will contain the raw JSON response as a string.
-            String forecastJsonStr = null;
+
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -163,10 +177,10 @@ public class MovieFragment extends Fragment {
                     // Stream was empty.  No point in parsing.
                     return null;
                 }
-                forecastJsonStr = buffer.toString();
+                moviesJsonStr = buffer.toString();
 
                 try {
-                    Posters = getPosters(forecastJsonStr, 6);
+                    Posters = getPosters(moviesJsonStr, 6);
                     return Posters;
 
 
@@ -199,9 +213,8 @@ public class MovieFragment extends Fragment {
 
         protected void onPostExecute(String[] result) {
             if (result != null) {
-                //imageAdapter.updateResults(result);
-                imageAdapter.moviePosters.clear();
 
+                imageAdapter.moviePosters.clear();
                 for (int i = 0; i < result.length; i++) {
                     imageAdapter.moviePosters.add(result[i]);
                 }
