@@ -60,16 +60,18 @@ public class MovieFragment extends Fragment {
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_movie_fragment, menu);
+        /*inflater.inflate(R.menu.menu_movie_details, menu);*/
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        /*
         int item_selected = item.getItemId();
         if (item_selected == R.id.refresh) {
             updateGrid();
             return true;
         }
+
+        */
 
 
         return super.onOptionsItemSelected(item);
@@ -80,8 +82,6 @@ public class MovieFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sorting_order = prefs.getString(getString(R.string.sorting_key),
                 getString(R.string.sort_mostpopular));
-        /*Toast.makeText(getActivity(), sorting_order,
-                Toast.LENGTH_LONG).show();*/
         String url;
         if (sorting_order.equals(getString(R.string.sort_mostpopular))) {
             url = getString(R.string.url_MP);
@@ -136,22 +136,12 @@ public class MovieFragment extends Fragment {
 
         @Override
         protected String[] doInBackground(String... params) {
-            // These two need to be declared outside the try/catch
-            // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
-            // Will contain the raw JSON response as a string.
-
 
             try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast vote_average.desc
-                //URL url = new URL("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=d2d5f7382930f7cf1e176da00f076953");
                 URL url = new URL(params[0]);
-
-                // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -160,27 +150,22 @@ public class MovieFragment extends Fragment {
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
-                    // Nothing to do.
                     return null;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
                     buffer.append(line + "\n");
                 }
                 String[] Posters;
                 if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
                     return null;
                 }
                 moviesJsonStr = buffer.toString();
 
                 try {
-                    Posters = getPosters(moviesJsonStr, 6);
+                    Posters = getPosters(moviesJsonStr, 4);
                     return Posters;
 
 
@@ -192,8 +177,6 @@ public class MovieFragment extends Fragment {
 
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
-                // If the code didn't successfully get the weather data, there's no point in attemping
-                // to parse it.
                 return null;
             } finally {
                 if (urlConnection != null) {
@@ -213,7 +196,6 @@ public class MovieFragment extends Fragment {
 
         protected void onPostExecute(String[] result) {
             if (result != null) {
-
                 imageAdapter.moviePosters.clear();
                 for (int i = 0; i < result.length; i++) {
                     imageAdapter.moviePosters.add(result[i]);

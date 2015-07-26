@@ -7,7 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,29 +89,56 @@ public class MovieDetailsActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View rootDetailView = inflater.inflate(R.layout.fragment_movie_details,container,false);
         String movieStr;
         String moviePostn;
+
+        String moviePoster = null;
+        String movieName = null;
+        String movieOverview = null;
+        String movieDate = null;
+        String movieRating = null;
+
+
         Intent intent = getActivity().getIntent();
         if (intent!=null && intent.hasExtra(intent.EXTRA_TEXT))
         {
             movieStr = intent.getStringExtra(intent.EXTRA_TEXT);
             moviePostn = intent.getStringExtra(intent.EXTRA_REFERRER);
-            String nametmep = null;
-            try {
-               nametmep  = getMovieName(movieStr,Integer.parseInt(moviePostn));
-            } catch (JSONException e) {
+
+            try
+            {
+                movieName  = getMovieName(movieStr, Integer.parseInt(moviePostn));
+                moviePoster  = getMoviePoster(movieStr, Integer.parseInt(moviePostn));
+                movieOverview  = getMovieOverview(movieStr, Integer.parseInt(moviePostn));
+                movieDate  = getMovieDate(movieStr, Integer.parseInt(moviePostn));
+                movieRating  = getMovieRating(movieStr, Integer.parseInt(moviePostn));
+
+                ((TextView) rootDetailView.findViewById(R.id.tview_r1))
+                        .setText(movieName);
+                ((TextView) rootDetailView.findViewById(R.id.tview_r2_1))
+                        .setText("Release Date \n " + movieDate);
+                ((TextView) rootDetailView.findViewById(R.id.tview_r2_2))
+                        .setText("Rating \n " + movieRating);
+                ((TextView) rootDetailView.findViewById(R.id.tview_r3))
+                        .setText(movieOverview);
+
+                ImageView imageView = (ImageView) rootDetailView.findViewById(R.id.iview_r2);
+                Picasso.with(getActivity()).load(getString(R.string.url_Posters)+moviePoster).into(imageView);
+
+            }
+            catch (JSONException e)
+            {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
             }
-
-            Toast.makeText(getActivity(), nametmep,
-                    Toast.LENGTH_LONG).show();
 
         }
 
 
 
-        return inflater.inflate(R.layout.fragment_movie_details, container, false);
+        return rootDetailView;
 
     }
 }

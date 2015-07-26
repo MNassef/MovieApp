@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -30,7 +31,6 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        //return mThumbIds.length;
         return moviePosters.size();
     }
 
@@ -46,26 +46,10 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         View grid;
-        //if (convertView == null) {
-
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            grid = inflater.inflate(R.layout.grid_image, null);
-
-            SquareImageView imageView = (SquareImageView) grid.findViewById(R.id.grid_image_view);
-            if (moviePosters.get(position).toString().equals("http://i.imgur.com/DvpvklR.png"))
-            {
-                Picasso.with(mContext).load("http://i.imgur.com/DvpvklR.png").into(imageView);
-
-            }
-            else
-            {
-                Picasso.with(mContext).load("http://image.tmdb.org/t/p/w154/"+moviePosters.get(position).toString()).into(imageView);
-            }
-
-
-         /*else {
-            grid = convertView;
-        }*/
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        grid = inflater.inflate(R.layout.grid_image, null);
+        CustomImageView imageView = (CustomImageView) grid.findViewById(R.id.grid_image_view);
+        Picasso.with(mContext).load(mContext.getString(R.string.url_Posters)+moviePosters.get(position).toString()).into(imageView);
 
         return grid;
     }
