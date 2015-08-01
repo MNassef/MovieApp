@@ -40,7 +40,6 @@ public class CustomImageView extends ImageView {
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x;
         int height = size.y;
 
         TypedArray styledAttributes = mContext.getTheme().obtainStyledAttributes(

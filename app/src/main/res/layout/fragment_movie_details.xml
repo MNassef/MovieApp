@@ -58,13 +58,21 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tview_r3"
-        android:paddingLeft="8dp"
-
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tview_r3"
+            android:paddingLeft="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+
+    </ScrollView>
+
 
 </LinearLayout>
