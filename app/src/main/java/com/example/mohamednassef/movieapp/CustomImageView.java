@@ -1,6 +1,7 @@
 package com.example.mohamednassef.movieapp;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.util.AttributeSet;
@@ -41,6 +42,8 @@ public class CustomImageView extends ImageView {
         Point size = new Point();
         display.getSize(size);
         int height = size.y;
+        int width = size.x;
+
 
         TypedArray styledAttributes = mContext.getTheme().obtainStyledAttributes(
                 new int[]{android.R.attr.actionBarSize});
@@ -51,7 +54,16 @@ public class CustomImageView extends ImageView {
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         statusBarHeight = getResources().getDimensionPixelSize(resourceId);
 
-        setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height-mActionBarHeight-statusBarHeight)/2));
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height-mActionBarHeight-statusBarHeight)));
+        }
+        else
+        {
+            setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height-mActionBarHeight-statusBarHeight)/2));
+        }
+
     }
 
 }

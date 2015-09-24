@@ -5,74 +5,142 @@
     android:orientation="vertical"
     tools:context="com.example.mohamednassef.movieapp.MovieDetailsActivityFragment">
 
-    <TextView
-        android:id="@+id/tview_r1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        android:paddingBottom="4dp"
-        android:background="#009688"
-        android:textColor="#ffffff"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iview_r2"
+        <TextView
+            android:id="@+id/tview_r1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#009688"
+            android:gravity="center_vertical"
+            android:paddingBottom="16dp"
             android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#ffffff" />
+        
+
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tview_r2_1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:lines="2"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_weight="1" />
+            <ImageView
+                android:id="@+id/iview_r2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" />
 
-            <TextView
-                android:id="@+id/tview_r2_2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:lines="2"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_weight="1" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tview_r2_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/tview_r2_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:lines="2"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Button
+                    android:id="@+id/button_r2_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="Reviews"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tview_fav"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text= "Favorite"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+                <ImageButton android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tview_r3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="8dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </ScrollView>
 
 
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <TextView
+
+        <ListView
+            android:id="@+id/listview_trailers"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tview_r3"
-            android:paddingLeft="8dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            />
+            android:layout_height="match_parent" />
 
-
-    </ScrollView>
+    </LinearLayout>
 
 
 </LinearLayout>

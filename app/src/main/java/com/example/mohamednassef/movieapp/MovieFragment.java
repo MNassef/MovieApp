@@ -1,7 +1,10 @@
 package com.example.mohamednassef.movieapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -34,8 +37,12 @@ import java.util.ArrayList;
  */
 public class MovieFragment extends Fragment {
 
+    public static String detailsJsonStr = null;
+    public static int firstImgIndex;
+    private static int numMovies = 12;
     public ImageAdapter imageAdapter;
-    public FetchPostersTask fetch;
+    public FetchPostersTask fetchPosters;
+    public GridView gridview;
 
 
     public MovieFragment() {
@@ -53,10 +60,24 @@ public class MovieFragment extends Fragment {
 
     }
 
+    public static int getMovieId(String movieJSONStr, int movieIndex) throws JSONException {
+        int movId;
+        JSONObject moviesJSON = new JSONObject(movieJSONStr);
+        JSONArray results = moviesJSON.getJSONArray("results");
+        JSONObject movie = results.getJSONObject(movieIndex);
+        movId = movie.getInt("id");
+
+        return movId;
+    }
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
+        this.setRetainInstance(true);
+
+
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -77,57 +98,133 @@ public class MovieFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+    //Based on a stackoverflow snippet
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public void updateGrid() {
-        fetch = new FetchPostersTask();
+        if (isNetworkAvailable()) {
+            fetchPosters = new FetchPostersTask();
+        }
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sorting_order = prefs.getString(getString(R.string.sorting_key),
                 getString(R.string.sort_mostpopular));
+
+
+
+
         String url;
         if (sorting_order.equals(getString(R.string.sort_mostpopular))) {
             url = getString(R.string.url_MP);
-        } else {
+            fetchPosters.execute(url);
+        }
+
+
+        else if (sorting_order.equals(getString(R.string.sort_highestrated)))
+        {
+
             url = getString(R.string.url_HR);
+            fetchPosters.execute(url);
+
+        }
+        else
+        {
+
+            String key = "posters";
+            String[] favMoviesArr = MyUtility.getFavoriteMoviesArray(getActivity().getApplicationContext(),key);
+
+            if (favMoviesArr != null)
+            {
+                imageAdapter.moviePosters.clear();
+                for (int i = 0; i < favMoviesArr.length; i++) {
+                    imageAdapter.moviePosters.add(favMoviesArr[i]);
+                }
+                imageAdapter.notifyDataSetChanged();
+            }
+
 
         }
 
 
-        fetch.execute(url);
+
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        GridView gridview = (GridView) rootView.findViewById(R.id.grid_view);
-
+        gridview = (GridView) rootView.findViewById(R.id.grid_view);
         imageAdapter = new ImageAdapter(getActivity(), new ArrayList<String>());
         gridview.setAdapter(imageAdapter);
 
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String movies = fetch.moviesJsonStr;
+
+                    /*Toast.makeText(getActivity(), Integer.toString(gridview.getFirstVisiblePosition()),
+                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), Integer.toString(gridview.getLastVisiblePosition()),
+                            Toast.LENGTH_LONG).show();*/
+                int movieId = 0;
+                String movies = fetchPosters.moviesJsonStr;
+                try {
+                    movieId = getMovieId(movies, position);
+                } catch (JSONException e) {
+                    Log.e("Log_TAG", e.getMessage(), e);
+                    e.printStackTrace();
+                }
+                String urlMovDetails = getString(R.string.url_mov_P1) + Integer.toString(movieId) + "?" + getString(R.string.url_mov_P2);
+
 
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class)
                         .putExtra(Intent.EXTRA_TEXT, movies);
-                intent.putExtra(Intent.EXTRA_REFERRER,Integer.toString(position));
+                intent.putExtra(Intent.EXTRA_REFERRER, Integer.toString(position));
+                intent.putExtra(Intent.ACTION_ASSIST,urlMovDetails);
+                intent.putExtra(Intent.EXTRA_REFERRER_NAME,Integer.toString(movieId));
                 startActivity(intent);
+
             }
         });
 
+
         return rootView;
+
 
     }
 
     @Override
+
     public void onStart() {
+
         super.onStart();
         updateGrid();
+
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        firstImgIndex = gridview.getFirstVisiblePosition();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        gridview.setSelection(firstImgIndex);
+    }
+
 
     public class FetchPostersTask extends AsyncTask<String, Void, String[]> {
 
@@ -164,8 +261,9 @@ public class MovieFragment extends Fragment {
                 }
                 moviesJsonStr = buffer.toString();
 
+
                 try {
-                    Posters = getPosters(moviesJsonStr, 4);
+                    Posters = getPosters(moviesJsonStr, numMovies);
                     return Posters;
 
 
@@ -195,6 +293,8 @@ public class MovieFragment extends Fragment {
 
 
         protected void onPostExecute(String[] result) {
+
+
             if (result != null) {
                 imageAdapter.moviePosters.clear();
                 for (int i = 0; i < result.length; i++) {
@@ -204,4 +304,7 @@ public class MovieFragment extends Fragment {
             }
         }
     }
+
+
 }
+

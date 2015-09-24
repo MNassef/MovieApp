@@ -4,10 +4,12 @@
     <string-array name="sort_options">
         <item>@string/sort_mostpopular_label</item>
         <item>@string/sort_highestrated_label</item>
+        <item>@string/sort_favorite_label</item>
     </string-array>
 
     <string-array name="sort_values">
         <item>@string/sort_mostpopular</item>
         <item>@string/sort_highestrated</item>
+        <item>@string/sort_favorite</item>
     </string-array>
 </resources>

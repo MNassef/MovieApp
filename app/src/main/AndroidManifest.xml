@@ -3,6 +3,8 @@
     package="com.example.mohamednassef.movieapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +13,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,6 +33,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mohamednassef.movieapp.MainActivity" />
         </activity>
+
     </application>
 
 </manifest>

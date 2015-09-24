@@ -47,7 +47,7 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View grid;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        grid = inflater.inflate(R.layout.grid_image, null);
+        grid = inflater.inflate(R.layout.grid_image, parent,false);
         CustomImageView imageView = (CustomImageView) grid.findViewById(R.id.grid_image_view);
         Picasso.with(mContext).load(mContext.getString(R.string.url_Posters)+moviePosters.get(position).toString()).into(imageView);
 
