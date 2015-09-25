@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,6 +33,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -46,6 +47,7 @@ public class MovieDetailsActivityFragment extends Fragment {
     private static boolean isFavorite;
     private final String LOG_TAG = MovieDetailsActivityFragment.class.getSimpleName();
     public ArrayAdapter<String> mTrailersAdapter;
+    public ArrayAdapter<String> mReviewsAdapter;
     private FetchMovieDetailsTask fetchMovieDetailsTask;
     private String[] youtubeUrls;
 
@@ -157,6 +159,53 @@ public class MovieDetailsActivityFragment extends Fragment {
     }
 
 
+    public static String[] getReviewAuthors(String detailsJSONStr) throws JSONException {
+        if (detailsJSONStr != null) {
+            String[] authorsArray;
+            JSONObject detailsJSON = new JSONObject(detailsJSONStr);
+            JSONObject reviewsJSON = detailsJSON.getJSONObject("reviews");
+            JSONArray reviewResults = reviewsJSON.getJSONArray("results");
+            authorsArray = new String[reviewResults.length()];
+
+            for (int i = 0; i < reviewResults.length(); i++) {
+                JSONObject temp = reviewResults.getJSONObject(i);
+                authorsArray[i] = temp.getString("author");
+                Log.v(Integer.toString(i), authorsArray[i]);
+
+            }
+
+            return authorsArray;
+        } else {
+            return null;
+        }
+
+
+    }
+
+
+    public static String[] getMovieReviews(String detailsJSONStr) throws JSONException {
+        if (detailsJSONStr != null) {
+            String[] reviewsArray;
+            JSONObject detailsJSON = new JSONObject(detailsJSONStr);
+            JSONObject reviewsJSON = detailsJSON.getJSONObject("reviews");
+            JSONArray reviewResults = reviewsJSON.getJSONArray("results");
+            reviewsArray = new String[reviewResults.length()];
+
+            for (int i = 0; i < reviewResults.length(); i++) {
+                JSONObject temp = reviewResults.getJSONObject(i);
+                reviewsArray[i] = temp.getString("content");
+
+            }
+
+            return reviewsArray;
+        } else {
+            return null;
+        }
+
+
+    }
+
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -185,6 +234,9 @@ public class MovieDetailsActivityFragment extends Fragment {
         String urlMovieDetails;
         final String movieId;
         String[] trailerLabels;
+        String[] authors;
+        String[] reviews;
+        String[] Combined;
 
 
         mTrailersAdapter =
@@ -217,6 +269,7 @@ public class MovieDetailsActivityFragment extends Fragment {
                 movieDate = getMovieDate(movieStr, Integer.parseInt(moviePostn));
                 movieRating = getMovieRating(movieStr, Integer.parseInt(moviePostn));
                 trailerLabels = getMovieTrailerLabels(detailsJsonStr);
+
 
 
                 ((TextView) rootDetailView.findViewById(R.id.tview_r1))
@@ -262,6 +315,37 @@ public class MovieDetailsActivityFragment extends Fragment {
                 });
 
 
+                // User Reviews Listview
+                authors = getReviewAuthors(detailsJsonStr);
+                reviews = getMovieReviews(detailsJsonStr);
+                if (authors.length > 0) {
+                    Combined = new String[authors.length];
+                    int i;
+
+                    for (i = 0; i < Combined.length; i++) {
+                        Combined[i] = authors[i] + " \n \n" + reviews[i];
+                    }
+
+                } else {
+                    Combined = new String[1];
+                    Combined[0] = getString(R.string.noReviews);
+                }
+
+
+                List<String> reviewsAuthors = new ArrayList<String>(Arrays.asList(Combined));
+                mReviewsAdapter =
+                        new ArrayAdapter<String>(getActivity(), R.layout.listview_item_reviews,
+                                R.id.review_tview, reviewsAuthors);
+
+                ListView reviewsListView = (ListView) rootDetailView.findViewById(R.id.listview_reviews);
+                reviewsListView.setAdapter(mReviewsAdapter);
+
+
+
+
+
+
+                /*
                 Button reviews = (Button) rootDetailView.findViewById(R.id.button_r2_3);
                 reviews.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
@@ -282,7 +366,7 @@ public class MovieDetailsActivityFragment extends Fragment {
                         fragmentTransaction.commit();
 
                     }
-                });
+                });*/
 
 
 
