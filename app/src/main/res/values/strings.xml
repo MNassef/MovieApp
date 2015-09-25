@@ -12,10 +12,10 @@
     <string name="title_activity_settings">Setting_Activity</string>
     <string name="action_settings">Settings</string>
     <string name="networkConnectivity">Network connectivity is needed to retrieve results</string>
-    <string name="url_MP">http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&amp;api_key=d2d5f7382930f7cf1e176da00f076953</string>
-    <string name="url_HR">http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&amp;api_key=d2d5f7382930f7cf1e176da00f076953</string>
+    <string name="url_MP">http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&amp;api_key=#####</string>
+    <string name="url_HR">http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&amp;api_key=#####</string>
     <string name="url_mov_P1">http://api.themoviedb.org/3/movie/</string>
-    <string name="url_mov_P2">api_key=d2d5f7382930f7cf1e176da00f076953&amp;append_to_response=trailers,reviews</string>
+    <string name="url_mov_P2">api_key=#####&amp;append_to_response=trailers,reviews</string>
     <string name="url_Posters">http://image.tmdb.org/t/p/w154/</string>
     <string name="trailersListHeader">Trailers:</string>
     <string name="title_activity_movie_details">MovieDetail</string>
