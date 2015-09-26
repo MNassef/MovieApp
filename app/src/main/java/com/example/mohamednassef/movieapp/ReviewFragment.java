@@ -1,6 +1,3 @@
-import android.widget.ArrayAdapter;
-
-/*
 package com.example.mohamednassef.movieapp;
 
 import android.os.Bundle;
@@ -143,4 +140,3 @@ public class ReviewFragment extends Fragment {
     }
 
 }
-*/
