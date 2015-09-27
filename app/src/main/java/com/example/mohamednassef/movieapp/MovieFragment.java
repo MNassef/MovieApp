@@ -1,7 +1,6 @@
 package com.example.mohamednassef.movieapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +70,6 @@ public class MovieFragment extends Fragment {
         return movId;
     }
 
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
@@ -97,7 +96,6 @@ public class MovieFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-
 
     //Based on a stackoverflow snippet
     private boolean isNetworkAvailable() {
@@ -152,10 +150,7 @@ public class MovieFragment extends Fragment {
         }
 
 
-
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -188,15 +183,22 @@ public class MovieFragment extends Fragment {
                 String urlMovDetails = getString(R.string.url_mov_P1) + Integer.toString(movieId) + "?" + getString(R.string.url_mov_P2);
 
 
-                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class)
+                /*Intent intent = new Intent(getActivity(), MovieDetailsActivity.class)
                         .putExtra(Intent.EXTRA_TEXT, movies);
                 intent.putExtra(Intent.EXTRA_REFERRER, Integer.toString(position));
                 intent.putExtra(Intent.ACTION_ASSIST,urlMovDetails);
-                intent.putExtra(Intent.EXTRA_REFERRER_NAME,Integer.toString(movieId));
-                startActivity(intent);
+                intent.putExtra(Intent.EXTRA_REFERRER_NAME, Integer.toString(movieId));
+                startActivity(intent);*/
+
+                ((Callback) getActivity())
+                        .onItemSelected(movies, Integer.toString(position), urlMovDetails, Integer.toString(movieId));
+
 
             }
         });
+
+        String tag = (String) rootView.getTag();
+        Toast.makeText(getActivity(), tag, Toast.LENGTH_LONG).show();
 
 
         return rootView;
@@ -225,6 +227,11 @@ public class MovieFragment extends Fragment {
         gridview.setSelection(firstImgIndex);
     }
 
+    public interface Callback {
+
+        public void onItemSelected(String cbMovies, String cbMoviePos, String cbUrlMovieDetails, String cbMovieID);
+
+    }
 
     public class FetchPostersTask extends AsyncTask<String, Void, String[]> {
 

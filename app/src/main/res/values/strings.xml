@@ -18,6 +18,7 @@
     <string name="url_mov_P2">api_key=d2d5f7382930f7cf1e176da00f076953&amp;append_to_response=trailers,reviews</string>
     <string name="url_Posters">http://image.tmdb.org/t/p/w154/</string>
     <string name="trailersListHeader">Trailers:</string>
+    <string name="reviewsListHeader">Reviews:</string>
     <string name="title_activity_movie_details">MovieDetail</string>
     <string name='youtube_Base_URL'>http://www.youtube.com/watch?v=</string>
     <string name='reviews_fragment_title'>User Reviews</string>

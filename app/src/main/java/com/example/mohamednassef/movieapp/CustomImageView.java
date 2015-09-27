@@ -5,9 +5,11 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 /**
  * Created by mohamednassef on 7/14/15.
@@ -55,14 +57,56 @@ public class CustomImageView extends ImageView {
         statusBarHeight = getResources().getDimensionPixelSize(resourceId);
 
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        //Using Code from: http://stackoverflow.com/questions/15055458/detect-7-inch-and-10-inch-tablet-programmatically
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+        int heightPixels = metrics.heightPixels;
+
+
+        float widthDpi = metrics.xdpi;
+        float heightDpi = metrics.ydpi;
+        float widthInches = widthPixels / widthDpi;
+        float heightInches = heightPixels / heightDpi;
+
+        double diagonalInches = Math.sqrt(
+                (widthInches * widthInches)
+                        + (heightInches * heightInches));
+
+
+        Toast.makeText(mContext, Integer.toString((int) diagonalInches), Toast.LENGTH_LONG).show();
+
+
+        if (diagonalInches >= 9) // 10''
+
         {
-            setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height-mActionBarHeight-statusBarHeight)));
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height - mActionBarHeight - statusBarHeight) / 3));
+            } else {
+                setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height - mActionBarHeight - statusBarHeight) / 4));
+            }
+
+        } else if (diagonalInches >= 6) // 7''
+        {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height - mActionBarHeight - statusBarHeight) / 2));
+            } else {
+                setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height - mActionBarHeight - statusBarHeight) / 4));
+            }
+
         }
         else
         {
-            setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height-mActionBarHeight-statusBarHeight)/2));
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height - mActionBarHeight - statusBarHeight)));
+            } else {
+                setMeasuredDimension(getMeasuredWidth(), (int) Math.round((height - mActionBarHeight - statusBarHeight) / 2));
+            }
+
         }
+
 
     }
 

@@ -13,9 +13,24 @@ public class MovieDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         if (savedInstanceState == null) {
+
+            String movieStr = getIntent().getStringExtra(getIntent().EXTRA_TEXT);
+            String moviePostn = getIntent().getStringExtra(getIntent().EXTRA_REFERRER);
+            String urlMovieDetails = getIntent().getStringExtra(getIntent().ACTION_ASSIST);
+            String movieId = getIntent().getStringExtra(getIntent().EXTRA_REFERRER_NAME);
+
+            Bundle arguments = new Bundle();
+            String[] argsParams = {movieStr, moviePostn, urlMovieDetails, movieId};
+            arguments.putStringArray("Params", argsParams);
+
+            MovieDetailsActivityFragment fragment = new MovieDetailsActivityFragment();
+            fragment.setArguments(arguments);
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container_detail, new MovieDetailsActivityFragment())
+                    .add(R.id.movie_detail_container, fragment)
                     .commit();
+
+
         }
     }
 
