@@ -4,6 +4,5 @@
     android:name="com.example.mohamednassef.movieapp.MovieFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="!!!sw600"
     tools:context="com.example.mohamednassef.movieapp.MovieFragment"
     tools:layout="@android:layout/list_content" />

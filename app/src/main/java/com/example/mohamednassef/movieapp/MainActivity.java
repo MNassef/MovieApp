@@ -1,11 +1,10 @@
 package com.example.mohamednassef.movieapp;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity implements MovieFragment.Callback {
@@ -22,7 +21,6 @@ public class MainActivity extends ActionBarActivity implements MovieFragment.Cal
 
         if (findViewById(R.id.movie_detail_container) != null) {
 
-            Toast.makeText(this, "twopane", Toast.LENGTH_LONG).show();
             mTwoPane = true;
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
@@ -34,7 +32,6 @@ public class MainActivity extends ActionBarActivity implements MovieFragment.Cal
 
 
         {
-            Toast.makeText(this, "onepane", Toast.LENGTH_LONG).show();
             mTwoPane = false;
         }
 

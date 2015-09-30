@@ -246,7 +246,7 @@ public class MovieDetailsActivityFragment extends Fragment {
 
         fetchMovieDetailsTask = new FetchMovieDetailsTask();
         Bundle arguments = getArguments();
-        
+
         if (arguments != null) {
 
             String[] paramsArray = arguments.getStringArray("Params");
@@ -300,6 +300,7 @@ public class MovieDetailsActivityFragment extends Fragment {
 
                 TextView listViewTitle = new TextView(getActivity());
                 listViewTitle.setPadding(16, 0, 0, 0);
+                listViewTitle.setTextAppearance(getActivity(), android.R.style.TextAppearance_Medium);
                 listViewTitle.setText(getString(R.string.trailersListHeader));
                 listView.addHeaderView(listViewTitle);
 
@@ -324,6 +325,7 @@ public class MovieDetailsActivityFragment extends Fragment {
 
                 TextView reviewsTitle = new TextView(getActivity());
                 reviewsTitle.setPadding(16, 0, 0, 0);
+                reviewsTitle.setTextAppearance(getActivity(), android.R.style.TextAppearance_Medium);
                 reviewsTitle.setText(getString(R.string.reviewsListHeader));
                 reviewsListView.addHeaderView(reviewsTitle);
 
