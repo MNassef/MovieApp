@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -168,10 +167,6 @@ public class MovieFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                    /*Toast.makeText(getActivity(), Integer.toString(gridview.getFirstVisiblePosition()),
-                            Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity(), Integer.toString(gridview.getLastVisiblePosition()),
-                            Toast.LENGTH_LONG).show();*/
                 int movieId = 0;
                 String movies = fetchPosters.moviesJsonStr;
                 try {
@@ -183,22 +178,12 @@ public class MovieFragment extends Fragment {
                 String urlMovDetails = getString(R.string.url_mov_P1) + Integer.toString(movieId) + "?" + getString(R.string.url_mov_P2);
 
 
-                /*Intent intent = new Intent(getActivity(), MovieDetailsActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, movies);
-                intent.putExtra(Intent.EXTRA_REFERRER, Integer.toString(position));
-                intent.putExtra(Intent.ACTION_ASSIST,urlMovDetails);
-                intent.putExtra(Intent.EXTRA_REFERRER_NAME, Integer.toString(movieId));
-                startActivity(intent);*/
-
                 ((Callback) getActivity())
                         .onItemSelected(movies, Integer.toString(position), urlMovDetails, Integer.toString(movieId));
 
 
             }
         });
-
-        String tag = (String) rootView.getTag();
-        Toast.makeText(getActivity(), tag, Toast.LENGTH_LONG).show();
 
 
         return rootView;

@@ -45,11 +45,20 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        View grid;
+        View grid = convertView;
+        ImageViewHolder imageViewHolder;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        grid = inflater.inflate(R.layout.grid_image, parent,false);
-        CustomImageView imageView = (CustomImageView) grid.findViewById(R.id.grid_image_view);
-        Picasso.with(mContext).load(mContext.getString(R.string.url_Posters)+moviePosters.get(position).toString()).into(imageView);
+
+        if (convertView == null) {
+            grid = inflater.inflate(R.layout.grid_image, parent, false);
+            imageViewHolder = new ImageViewHolder(grid);
+            grid.setTag(imageViewHolder);
+
+        } else {
+            imageViewHolder = (ImageViewHolder) convertView.getTag();
+        }
+
+        Picasso.with(mContext).load(mContext.getString(R.string.url_Posters) + moviePosters.get(position).toString()).into(imageViewHolder.customImageView);
 
         return grid;
     }

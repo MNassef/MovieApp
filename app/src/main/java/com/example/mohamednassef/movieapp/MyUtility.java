@@ -58,6 +58,7 @@ public class MyUtility {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, newFavoriteList);
         editor.commit();
+        //Toast.makeText(context, newFavoriteList, Toast.LENGTH_LONG).show();
         return true;
     }
 
@@ -148,6 +149,7 @@ public class MyUtility {
         }
 
         String UpdatedMovieString = convertArrayToString(updatedMovieArray);
+        //Toast.makeText(context,UpdatedMovieString , Toast.LENGTH_LONG).show();
         updateFavoriteString(context,UpdatedMovieString, key);
 
     }

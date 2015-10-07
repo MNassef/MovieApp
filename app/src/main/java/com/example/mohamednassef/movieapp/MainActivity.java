@@ -65,10 +65,12 @@ public class MainActivity extends ActionBarActivity implements MovieFragment.Cal
 
     @Override
     public void onItemSelected(String cbMovies, String cbMoviePos, String cbUrlMovieDetails, String cbMovieID) {
+
+        final String fragmentInitParams = "Params";
         if (mTwoPane) {
             Bundle args = new Bundle();
             String[] argsParams = {cbMovies, cbMoviePos, cbUrlMovieDetails, cbMovieID};
-            args.putStringArray("Params", argsParams);
+            args.putStringArray(fragmentInitParams, argsParams);
 
             MovieDetailsActivityFragment newFragment = new MovieDetailsActivityFragment();
             newFragment.setArguments(args);

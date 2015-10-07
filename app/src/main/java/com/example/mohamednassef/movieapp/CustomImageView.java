@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 /**
  * Created by mohamednassef on 7/14/15.
@@ -75,7 +74,6 @@ public class CustomImageView extends ImageView {
                         + (heightInches * heightInches));
 
 
-        Toast.makeText(mContext, Integer.toString((int) diagonalInches), Toast.LENGTH_LONG).show();
 
 
         if (diagonalInches >= 9) // 10''

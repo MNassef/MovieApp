@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -216,11 +215,11 @@ public class MovieDetailsActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-  /*      SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        /*SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
-*/
+        editor.commit();*/
+
         View rootDetailView = inflater.inflate(R.layout.fragment_movie_details, container, false);
         String movieStr;
         String moviePostn;
@@ -232,6 +231,7 @@ public class MovieDetailsActivityFragment extends Fragment {
         String urlMovieDetails;
         final String movieId;
         String[] trailerLabels;
+        final String fragmentInitParams = "Params";
 
 
         mTrailersAdapter =
@@ -249,7 +249,7 @@ public class MovieDetailsActivityFragment extends Fragment {
 
         if (arguments != null) {
 
-            String[] paramsArray = arguments.getStringArray("Params");
+            String[] paramsArray = arguments.getStringArray(fragmentInitParams);
             movieStr = paramsArray[0];
             moviePostn = paramsArray[1];
             urlMovieDetails = paramsArray[2];
@@ -281,6 +281,10 @@ public class MovieDetailsActivityFragment extends Fragment {
                         .setText("Rating \n " + movieRating);
                 ((TextView) rootDetailView.findViewById(R.id.tview_r3))
                         .setText(movieOverview);
+                ((TextView) rootDetailView.findViewById(R.id.tview_fav))
+                        .setText(getString(R.string.tview_favorite_label));
+
+
 
                 ImageView imageView = (ImageView) rootDetailView.findViewById(R.id.iview_r2);
                 Picasso.with(getActivity()).load(getString(R.string.url_Posters) + moviePoster).into(imageView);
@@ -340,13 +344,9 @@ public class MovieDetailsActivityFragment extends Fragment {
                         if (!isFavorite) {
                             isFavorite = true;
                             favButton.setBackgroundResource(R.drawable.btn_star_big_on_pressed);
-
-
-
                             MyUtility.addFavoriteMovie(getActivity().getApplicationContext(), movieId, 0);
                             MyUtility.addFavoriteMovie(getActivity().getApplicationContext(), moviePoster, 1);
-                            Toast.makeText(getActivity(), MyUtility.getFavoriteMoviesString(getActivity().getApplicationContext(), null, "posters"),
-                                    Toast.LENGTH_LONG).show();
+
 
 
                         } else {
@@ -354,8 +354,7 @@ public class MovieDetailsActivityFragment extends Fragment {
                             favButton.setBackgroundResource(R.drawable.btn_star_big_off_pressed);
                             MyUtility.removeMovieFromFavorite(getActivity().getApplicationContext(), movieId, 0);
                             MyUtility.removeMovieFromFavorite(getActivity().getApplicationContext(), moviePoster, 1);
-                            Toast.makeText(getActivity(), MyUtility.getFavoriteMoviesString(getActivity().getApplicationContext(), null, "posters"),
-                                    Toast.LENGTH_LONG).show();
+
 
                         }
 
@@ -441,6 +440,7 @@ public class MovieDetailsActivityFragment extends Fragment {
             String[] authors = null;
             String[] reviews = null;
             String[] reviewsAuthorsCombined = null;
+            String caption = " wrote:";
 
             try {
                 currentTrailers = getMovieTrailerLabels(detailsJSONStr);
@@ -469,13 +469,14 @@ public class MovieDetailsActivityFragment extends Fragment {
                 int i;
 
                 for (i = 0; i < reviewsAuthorsCombined.length; i++) {
-                    reviewsAuthorsCombined[i] = authors[i] + " \n \n" + reviews[i];
+                    reviewsAuthorsCombined[i] = authors[i] + caption + " \n \n" + reviews[i];
                     mReviewsAdapter.add(reviewsAuthorsCombined[i]);
                 }
 
             } else {
                 reviewsAuthorsCombined = new String[1];
                 reviewsAuthorsCombined[0] = getString(R.string.noReviews);
+                mReviewsAdapter.add(reviewsAuthorsCombined[0]);
             }
             mReviewsAdapter.notifyDataSetChanged();
 
